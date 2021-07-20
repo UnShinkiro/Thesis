@@ -34,9 +34,12 @@ for pid, speaker in enumerate(spk_list[0:N_SPEAKER]):
     utterance[speaker]['files'] = []
     for folder in folders:
         path = "vox/vox1_dev_wav/" + speaker + "/" + folder
-        files = os.listdir(path)
-        for file in files:
-            utterance[speaker]['files'].append(folder + "/" + file)
+        try:
+            files = os.listdir(path)
+            for file in files:
+                utterance[speaker]['files'].append(folder + "/" + file)
+        except:
+            pass
     for count in range(10):
         file_path = "vox/vox1_dev_wav/" + speaker + "/" + utterance[speaker]['files'].pop(0)
         try:
