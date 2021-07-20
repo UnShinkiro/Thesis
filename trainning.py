@@ -42,17 +42,17 @@ for pid, speaker in enumerate(spk_list[0:N_SPEAKER]):
                     if not file.startswith("."):
                         utterance[speaker]['files'].append(folder + "/" + file)
 
-            for count in range(10):
-                file_path = "vox/vox1_dev_wav/" + speaker + "/" + utterance[speaker]['files'].pop(0)
-                try:
-                    _, data = wavfile.read(file_path)         # requires tons of memory with many spekaers
-                    emphasized_signal = np.append(data[0], data[1:] - pre_emphasis * data[:-1])
-                    if count < 5:
-                        emphasized_data.append((emphasized_signal,pid))
-                    elif count < 10:
-                        validation_dataset.append((emphasized_signal,pid))
-                except:
-                    pass
+        for count in range(10):
+            file_path = "vox/vox1_dev_wav/" + speaker + "/" + utterance[speaker]['files'].pop(0)
+            try:
+                _, data = wavfile.read(file_path)         # requires tons of memory with many spekaers
+                emphasized_signal = np.append(data[0], data[1:] - pre_emphasis * data[:-1])
+                if count < 5:
+                    emphasized_data.append((emphasized_signal,pid))
+                elif count < 10:
+                    validation_dataset.append((emphasized_signal,pid))
+            except:
+                pass
 
 for entry in emphasized_data:
     form_input_data(entry, train_data, train_label)
