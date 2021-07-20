@@ -2,7 +2,7 @@ from scipy.io import wavfile
 import os
 import numpy as np
 
-SAMPLE_RATE, _ = wavfile.read("../VCTK-Corpus/wav48/p225/p225_001.wav")
+SAMPLE_RATE = 16000
 FRAME_SIZE = int(SAMPLE_RATE * 0.025)
 NFFT = 512 
 NFILT = 40

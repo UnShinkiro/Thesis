@@ -8,7 +8,7 @@ from tensorflow import keras
 from pre_process import form_input_data
 
 INT16_MAX = 32767
-SAMPLE_RATE, _ = wavfile.read("vox/vox1_dev_wav/id10004")
+SAMPLE_RATE = 16000
 FRAME_SIZE = int(SAMPLE_RATE * 0.025)
 NFFT = 512 
 NFILT = 40
