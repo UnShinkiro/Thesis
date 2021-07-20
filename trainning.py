@@ -38,6 +38,7 @@ for pid, speaker in enumerate(spk_list[0:N_SPEAKER]):
                 path = "vox/vox1_dev_wav/" + speaker + "/" + folder
                 try:
                     files = os.listdir(path)
+                    print(files)
                     for file in files:
                         utterance[speaker]['files'].append(folder + "/" + file)
                 except:
