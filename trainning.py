@@ -33,9 +33,7 @@ for pid, speaker in enumerate(spk_list[0:N_SPEAKER]):
     folders = os.listdir(path)
     utterance[speaker]['files'] = []
     for folder in folders:
-        if folder[0] == ".":
-            pass
-        else:
+        if not f.startswith("."):
             path = "vox/vox1_dev_wav/" + speaker + "/" + folder
             try:
                 files = os.listdir(path)
