@@ -11,6 +11,13 @@ N_SPEAKER = 0
 pre_emphasis = 0.97
 
 spk_list = os.listdir("vox/vox1_dev_wav")
+n = 0
+while n in range(len(spk_list)):
+    if spk_list[n].startswith("."):
+        spk_list.pop(n)
+        n -= 1
+    n += 1
+
 utterance = {}
 emphasized_data = []
 validation_dataset = []
@@ -22,32 +29,31 @@ enrollment_dataset = []
 verification_dataset = []
 
 for pid, speaker in enumerate(spk_list):
-    if not speaker.startswith("."):
-        N_SPEAKER += 1
-        print(f"Logging speaker {pid}")
-        utterance[speaker] = {}
-        path = "vox/vox1_dev_wav/" + speaker
-        folders = os.listdir(path)
-        utterance[speaker]['files'] = []
-        for folder in folders:
-            if not folder.startswith("."):
-                path = "vox/vox1_dev_wav/" + speaker + "/" + folder
-                files = os.listdir(path)
-                for file in files:
-                    if not file.startswith("."):
-                        utterance[speaker]['files'].append(folder + "/" + file)
+    N_SPEAKER += 1
+    print(f"Logging speaker {pid}")
+    utterance[speaker] = {}
+    path = "vox/vox1_dev_wav/" + speaker
+    folders = os.listdir(path)
+    utterance[speaker]['files'] = []
+    for folder in folders:
+        if not folder.startswith("."):
+            path = "vox/vox1_dev_wav/" + speaker + "/" + folder
+            files = os.listdir(path)
+            for file in files:
+                if not file.startswith("."):
+                    utterance[speaker]['files'].append(folder + "/" + file)
 
-        for count in range(10):
-            file_path = "vox/vox1_dev_wav/" + speaker + "/" + utterance[speaker]['files'].pop(0)
-            try:
-                _, data = wavfile.read(file_path)         # requires tons of memory with many spekaers
-                emphasized_signal = np.append(data[0], data[1:] - pre_emphasis * data[:-1])
-                if count < 5:
-                    emphasized_data.append((emphasized_signal,pid))
-                elif count < 10:
-                    validation_dataset.append((emphasized_signal,pid))
-            except:
-                pass
+    for count in range(10):
+        file_path = "vox/vox1_dev_wav/" + speaker + "/" + utterance[speaker]['files'].pop(0)
+        try:
+            _, data = wavfile.read(file_path)         # requires tons of memory with many spekaers
+            emphasized_signal = np.append(data[0], data[1:] - pre_emphasis * data[:-1])
+            if count < 5:
+                emphasized_data.append((emphasized_signal,pid))
+            elif count < 10:
+                validation_dataset.append((emphasized_signal,pid))
+        except:
+            pass
 
 for entry in emphasized_data:
     form_input_data(entry, train_data, train_label)
