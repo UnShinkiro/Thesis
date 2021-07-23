@@ -7,6 +7,7 @@ SAMPLE_RATE = 16000
 FRAME_SIZE = int(SAMPLE_RATE * 0.025)
 NFFT = 512 
 NFILT = 40
+N_SPEAKER = 0
 pre_emphasis = 0.97
 
 spk_list = os.listdir("vox/vox1_dev_wav")
@@ -22,6 +23,7 @@ verification_dataset = []
 
 for pid, speaker in enumerate(spk_list):
     if not speaker.startswith("."):
+        N_SPEAKER += 1
         print(f"Logging speaker {pid}")
         utterance[speaker] = {}
         path = "vox/vox1_dev_wav/" + speaker
@@ -53,6 +55,6 @@ for entry in validation_dataset:
     form_input_data(entry, validation_data, validation_label)
 
 with open('trainning_data.pkl', 'wb') as f:  # Python 3: open(..., 'wb')
-    pickle.dump([train_data, train_label, validation_data, validation_label], f)
+    pickle.dump([train_data, train_label, validation_data, validation_label, N_SPEAKER], f)
 with open('utterance_list.pkl', 'wb') as f:
     pickle.dump([utterance, spk_list], f)
