@@ -1,0 +1,57 @@
+from pre_process import form_input_data
+from scipy.io import wavfile
+import os
+import pickle
+
+SAMPLE_RATE = 16000
+FRAME_SIZE = int(SAMPLE_RATE * 0.025)
+NFFT = 512 
+NFILT = 40
+pre_emphasis = 0.97
+
+spk_list = os.listdir("vox/vox1_dev_wav")
+utterance = {}
+emphasized_data = []
+validation_dataset = []
+validation_data = []
+validation_label = []
+train_data = []
+train_label = []
+enrollment_dataset = []
+verification_dataset = []
+
+for pid, speaker in enumerate(spk_list):
+    if not speaker.startswith("."):
+        utterance[speaker] = {}
+        path = "vox/vox1_dev_wav/" + speaker
+        folders = os.listdir(path)
+        utterance[speaker]['files'] = []
+        for folder in folders:
+            if not folder.startswith("."):
+                path = "vox/vox1_dev_wav/" + speaker + "/" + folder
+                files = os.listdir(path)
+                for file in files:
+                    if not file.startswith("."):
+                        utterance[speaker]['files'].append(folder + "/" + file)
+
+        for count in range(10):
+            file_path = "vox/vox1_dev_wav/" + speaker + "/" + utterance[speaker]['files'].pop(0)
+            try:
+                _, data = wavfile.read(file_path)         # requires tons of memory with many spekaers
+                emphasized_signal = np.append(data[0], data[1:] - pre_emphasis * data[:-1])
+                if count < 5:
+                    emphasized_data.append((emphasized_signal,pid))
+                elif count < 10:
+                    validation_dataset.append((emphasized_signal,pid))
+            except:
+                pass
+
+for entry in emphasized_data:
+    form_input_data(entry, train_data, train_label)
+for entry in validation_dataset:
+    form_input_data(entry, validation_data, validation_label)
+
+with open('trainning_data.pkl', 'wb') as f:  # Python 3: open(..., 'wb')
+    pickle.dump([train_data, train_label, validation_data, validation_label], f)
+with open('utterance_list.pkl', 'wb') as f:
+    pickle.dump([utterance, spk_list], f)
