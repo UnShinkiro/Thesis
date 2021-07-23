@@ -22,6 +22,7 @@ verification_dataset = []
 
 for pid, speaker in enumerate(spk_list):
     if not speaker.startswith("."):
+        print("Logging speaker " + pid);
         utterance[speaker] = {}
         path = "vox/vox1_dev_wav/" + speaker
         folders = os.listdir(path)
