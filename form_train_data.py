@@ -55,10 +55,15 @@ for pid, speaker in enumerate(spk_list):
         except:
             pass
 
+counter = 0
 for entry in emphasized_data:
+    print(f"Handling entry {counter}")
     form_input_data(entry, train_data, train_label)
+    counter += 1
 for entry in validation_dataset:
+    print(f"Handling entry {counter}")
     form_input_data(entry, validation_data, validation_label)
+    counter += 1
 
 with open('trainning_data.pkl', 'wb') as f:  # Python 3: open(..., 'wb')
     pickle.dump([train_data, train_label, validation_data, validation_label, N_SPEAKER], f)
