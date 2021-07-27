@@ -42,7 +42,7 @@ for pid, speaker in enumerate(spk_list[0:100]):
             for file in files:
                 if not file.startswith("."):
                     utterance[speaker]['files'].append(folder + "/" + file)
-
+    print(utterance[speaker]['files'])
     for count in range(10):
         file_path = "vox/vox1_dev_wav/" + speaker + "/" + utterance[speaker]['files'].pop(0)
         try:
