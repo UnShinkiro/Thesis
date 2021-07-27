@@ -64,9 +64,11 @@ for entry in validation_dataset:
     form_input_data(entry, validation_data, validation_label)
     counter += 1
 
-print(train_data[0:10])
-
 with open('trainning_data.pkl', 'wb') as f:  # Python 3: open(..., 'wb')
-    pickle.dump([train_data, train_label, validation_data, validation_label, N_SPEAKER], f)
+    pickle.dump([train_data, train_label], f)
+
+with open('validation_data.pkl', 'wb') as f:
+    pickle.dump([validation_data, validation_label], f)
+
 with open('utterance_list.pkl', 'wb') as f:
-    pickle.dump([utterance, spk_list], f)
+    pickle.dump([utterance, spk_list, N_SPEAKER], f)
