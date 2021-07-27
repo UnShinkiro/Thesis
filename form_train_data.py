@@ -29,7 +29,7 @@ train_label = []
 enrollment_dataset = []
 verification_dataset = []
 
-for pid, speaker in enumerate(spk_list[0:100]):
+for pid, speaker in enumerate(spk_list):
     N_SPEAKER += 1
     print(f"Logging speaker {pid}")
     utterance[speaker] = {}
