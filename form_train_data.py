@@ -65,6 +65,8 @@ for entry in validation_dataset:
     form_input_data(entry, validation_data, validation_label)
     counter += 1
 
+print("Not skipped")
+
 with open('trainning_data.pkl', 'wb') as f:  # Python 3: open(..., 'wb')
     pickle.dump([train_data, train_label, validation_data, validation_label, N_SPEAKER], f)
 with open('utterance_list.pkl', 'wb') as f:
