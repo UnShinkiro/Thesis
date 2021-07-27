@@ -6,7 +6,13 @@ from tensorflow import keras
 NFILT = 40
 
 with open('trainning_data.pkl', 'rb') as f:  # Python 3: open(..., 'rb')
-    train_data, train_label, validation_data, validation_label, N_SPEAKER = pickle.load(f)
+    train_data, train_label = pickle.load(f)
+
+with open('validation_data.pkl', 'rb') as f:
+    validation_data, validation_label = pickle.load(f)
+
+with open('utterance_list.pkl', 'rb') as f:
+    utterance, spk_list, N_SPEAKER = pickle.load(f)
 
 inputs = keras.layers.Input(shape=(NFILT*41,))
 dense1 = keras.layers.Dense(256, kernel_regularizer='l2', activation='relu')(inputs)
