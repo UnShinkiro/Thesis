@@ -1,5 +1,6 @@
 #from pre_process import form_input_data
 from scipy.io import wavfile
+import numpy as np
 import os
 import pickle
 
@@ -42,19 +43,17 @@ for pid, speaker in enumerate(spk_list[0:100]):
             for file in files:
                 if not file.startswith("."):
                     utterance[speaker]['files'].append(folder + "/" + file)
-    print(utterance[speaker]['files'])
+
     for count in range(10):
         file_path = "vox/vox1_dev_wav/" + speaker + "/" + utterance[speaker]['files'].pop(0)
-        try:
-            _, data = wavfile.read(file_path)         # requires tons of memory with many spekaers
-            emphasized_signal = np.append(data[0], data[1:] - pre_emphasis * data[:-1])
-            if count < 5:
-                emphasized_data.append((emphasized_signal,pid))
-                print("Add entry")
-            elif count < 10:
-                validation_dataset.append((emphasized_signal,pid))
-        except:
-            pass
+        _, data = wavfile.read(file_path)         # requires tons of memory with many spekaers
+        emphasized_signal = np.append(data[0], data[1:] - pre_emphasis * data[:-1])
+        if count < 5:
+            emphasized_data.append((emphasized_signal,pid))
+            print("Add entry")
+        elif count < 10:
+            validation_dataset.append((emphasized_signal,pid))
+
 
 counter = 0
 for entry in emphasized_data:
