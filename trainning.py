@@ -18,8 +18,6 @@ with open('validation_data.pkl', 'rb') as f:
 with open('utterance_list.pkl', 'rb') as f:
     utterance, spk_list, N_SPEAKER = pickle.load(f)
 
-print(len(train_data),len(validation_data))
-
 
 inputs = keras.layers.Input(shape=(NFILT*41,))
 dense1 = keras.layers.Dense(256, kernel_regularizer='l2', activation='relu')(inputs)
@@ -28,7 +26,7 @@ dense3 = keras.layers.Dense(256, kernel_regularizer='l2', activation='relu')(den
 drop_out1 = keras.layers.Dropout(0.5)(dense3)
 dense4 = keras.layers.Dense(256, kernel_regularizer='l2', activation='relu')(drop_out1)
 drop_out2 = keras.layers.Dropout(0.5)(dense4)
-outputs = keras.layers.Dense(N_SPEAKER/2, activation='softmax')(drop_out2)
+outputs = keras.layers.Dense(N_SPEAKER, activation='softmax')(drop_out2)
 model = keras.models.Model(inputs=inputs, outputs=outputs)
 
 # train model
@@ -36,5 +34,5 @@ model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
 
-model.fit(np.array(train_data[:len(train_data)/2]), np.array(train_label[:len(train_label)/2]), epochs=10, shuffle=True, validation_data=(np.array(validation_data[:len(validation_data)/2]),np.array(validation_label[:len(validation_label)/2])))
+model.fit(np.array(train_data), np.array(train_label), epochs=10, shuffle=True, validation_data=(np.array(validation_data),np.array(validation_label)))
 model.save("saved_model/my_model")
