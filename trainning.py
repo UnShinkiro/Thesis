@@ -5,8 +5,12 @@ from tensorflow import keras
 
 NFILT = 40
 
+print("Loading training data from pickle")
+
 with open('trainning_data.pkl', 'rb') as f:  # Python 3: open(..., 'rb')
     train_data, train_label = pickle.load(f)
+
+print("Loading validation data from pickle")
 
 with open('validation_data.pkl', 'rb') as f:
     validation_data, validation_label = pickle.load(f)
