@@ -36,5 +36,5 @@ model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
 
-model.fit(np.array(train_data), np.array(train_label), epochs=10, shuffle=True, validation_data=(np.array(validation_data),np.array(validation_label)))
+model.fit(np.array(train_data[:len(train_data)/2]), np.array(train_label[:len(train_label)/2]), epochs=10, shuffle=True, validation_data=(np.array(validation_data[:len(validation_data)/2]),np.array(validation_label[:len(validation_label)/2])))
 model.save("saved_model/my_model")
