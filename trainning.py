@@ -28,7 +28,7 @@ dense3 = keras.layers.Dense(256, kernel_regularizer='l2', activation='relu')(den
 drop_out1 = keras.layers.Dropout(0.5)(dense3)
 dense4 = keras.layers.Dense(256, kernel_regularizer='l2', activation='relu')(drop_out1)
 drop_out2 = keras.layers.Dropout(0.5)(dense4)
-outputs = keras.layers.Dense(N_SPEAKER, activation='softmax')(drop_out2)
+outputs = keras.layers.Dense(N_SPEAKER/2, activation='softmax')(drop_out2)
 model = keras.models.Model(inputs=inputs, outputs=outputs)
 
 # train model
