@@ -27,7 +27,7 @@ with open(filename, 'rb') as f:  # Python 3: open(..., 'wb')
 for speaker in spk_list:
     print(f"testing {speaker}'s wavfiles")
     for count in range(10):
-        _, data = "vox/vox1_test_wav/" + speaker + "/" + utterance[speaker]['files'].pop(0)
+        _, data = wavfile.read("vox/vox1_test_wav/" + speaker + "/" + utterance[speaker]['files'].pop(0))
         emphasized_signal = np.append(data[0], data[1:] - pre_emphasis * data[:-1])
         evaluation_data = []
         evaluation_label = []
