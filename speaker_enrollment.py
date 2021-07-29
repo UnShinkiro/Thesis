@@ -37,6 +37,7 @@ for pid, speaker in enumerate(spk_list):
                     utterance[speaker]['files'].append(folder + "/" + file)
 
 for speaker in spk_list:
+    print("enrolling speaker {speaker}")
     enrollment_dataset = []
     for count in range(5):
         file_path = "vox/vox1_test_wav/" + speaker + "/" + utterance[speaker]['files'].pop(0)
@@ -65,6 +66,6 @@ for speaker in spk_list:
     with open(filename, 'wb') as f:  # Python 3: open(..., 'wb')
         pickle.dump([d_utterance_list, d_model], f)
 
-with open('test_utterance,pkl', 'wb') as f:  # Python 3: open(..., 'wb')
+with open('test_utterance.pkl', 'wb') as f:  # Python 3: open(..., 'wb')
     pickle.dump([utterance, spk_list], f)
 
