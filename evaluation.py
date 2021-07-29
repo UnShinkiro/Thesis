@@ -16,6 +16,9 @@ layer_name = 'dropout_1'
 intermediate_layer_model = keras.models.Model(inputs=model.input,
                                  outputs=model.get_layer(layer_name).output)
 
+with open('test_utterance.pkl', 'rb') as f:  # Python 3: open(..., 'wb')
+    utterance, spk_list = pickle.load(f)
+
 chosen_speaker = spk_list[pid]
 filename = 'd-vector/' +  chosen_speaker + '.pkl'
 with open(filename, 'rb') as f:  # Python 3: open(..., 'wb')
