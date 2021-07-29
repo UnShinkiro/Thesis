@@ -37,7 +37,7 @@ for pid, speaker in enumerate(spk_list):
                     utterance[speaker]['files'].append(folder + "/" + file)
 
 for speaker in spk_list:
-    print("enrolling speaker {speaker}")
+    print(f"enrolling speaker {speaker}")
     enrollment_dataset = []
     for count in range(5):
         file_path = "vox/vox1_test_wav/" + speaker + "/" + utterance[speaker]['files'].pop(0)
