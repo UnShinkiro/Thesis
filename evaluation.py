@@ -30,8 +30,8 @@ for chosen_speaker in spk_list:
             _, data = wavfile.read("vox/vox1_test_wav/" + speaker + "/" + file)
             emphasized_signal = np.append(data[0], data[1:] - pre_emphasis * data[:-1])
             evaluation_data = []
-            evaluation_label = []
-            form_input_data((emphasized_signal,pid), evaluation_data, evaluation_label)
+            evaluation_label = []   # Not used
+            form_input_data((emphasized_signal,0), evaluation_data, evaluation_label)
             intermediate_output = intermediate_layer_model.predict(np.array(evaluation_data))
             d_eva = np.zeros(256)
             for out in intermediate_output:
