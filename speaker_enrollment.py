@@ -1,10 +1,13 @@
 from scipy.io import wavfile
 import os
+import sys
 import pickle
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 from pre_process import form_input_data
+
+N_UTTERANCE = sys.argv[1]
 pre_emphasis = 0.97
 
 model = tf.keras.models.load_model("saved_model/my_model")
@@ -41,9 +44,10 @@ for speaker in spk_list:
     enrollment_dataset = []
     for count in range(10):
         file_path = "vox/vox1_test_wav/" + speaker + "/" + utterance[speaker]['files'].pop(0)
-        _, data = wavfile.read(file_path)         # requires tons of memory with many spekaers
-        emphasized_signal = np.append(data[0], data[1:] - pre_emphasis * data[:-1])
-        enrollment_dataset.append((emphasized_signal,pid))
+        if count < N_UTTERANCE:
+            _, data = wavfile.read(file_path)         # requires tons of memory with many spekaers
+            emphasized_signal = np.append(data[0], data[1:] - pre_emphasis * data[:-1])
+            enrollment_dataset.append((emphasized_signal,pid))
 
     enrollment_data = []
     enrollment_label = [] #Not used
