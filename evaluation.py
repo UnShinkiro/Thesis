@@ -18,7 +18,7 @@ intermediate_layer_model = keras.models.Model(inputs=model.input,
 with open('test_utterance.pkl', 'rb') as f:  # Python 3: open(..., 'wb')
     utterance, spk_list = pickle.load(f)
 
-for chosen_speaker in spk_list:
+for chosen_speaker in spk_list[0:1]:
     print(f"testing speaker {chosen_speaker}")
     filename = 'd-vector/' +  chosen_speaker + '.pkl'
     with open(filename, 'rb') as f:  # Python 3: open(..., 'wb')
