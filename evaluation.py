@@ -25,8 +25,9 @@ for chosen_speaker in spk_list:
         d_utterance_list, d_model = pickle.load(f)
 
     for speaker in spk_list:
-        print(f"test with {speaker}'s wavfiles")
+        print(f"\ttest with {speaker}'s wavfiles")
         for file in utterance[speaker]['files']:
+            print(f"\t\ttesting file {file}")
             _, data = wavfile.read("vox/vox1_test_wav/" + speaker + "/" + file)
             emphasized_signal = np.append(data[0], data[1:] - pre_emphasis * data[:-1])
             evaluation_data = []
