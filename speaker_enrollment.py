@@ -7,7 +7,7 @@ import tensorflow as tf
 from tensorflow import keras
 from pre_process import form_input_data
 
-N_UTTERANCE = sys.argv[1]
+N_UTTERANCE = int(sys.argv[1])
 pre_emphasis = 0.97
 
 model = tf.keras.models.load_model("saved_model/my_model")
