@@ -39,7 +39,7 @@ for pid, speaker in enumerate(spk_list):
 for speaker in spk_list:
     print(f"enrolling speaker {speaker}")
     enrollment_dataset = []
-    for count in range(5):
+    for count in range(10):
         file_path = "vox/vox1_test_wav/" + speaker + "/" + utterance[speaker]['files'].pop(0)
         _, data = wavfile.read(file_path)         # requires tons of memory with many spekaers
         emphasized_signal = np.append(data[0], data[1:] - pre_emphasis * data[:-1])
