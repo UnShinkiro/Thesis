@@ -29,10 +29,11 @@ drop_out2 = keras.layers.Dropout(0.5)(dense4)
 outputs = keras.layers.Dense(N_SPEAKER, activation='softmax')(drop_out2)
 model = keras.models.Model(inputs=inputs, outputs=outputs)
 
-# train model
-model.compile(optimizer='adam',
-              loss='sparse_categorical_crossentropy',
-              metrics=['accuracy'])
+# train model multiple times
+for n in range(1):
+    model.compile(optimizer='adam',
+                loss='sparse_categorical_crossentropy',
+                metrics=['accuracy'])
 
-model.fit(np.array(train_data), np.array(train_label), epochs=5, shuffle=True, validation_data=(np.array(validation_data),np.array(validation_label)))
-model.save("saved_model/my_model")
+    model.fit(np.array(train_data), np.array(train_label), epochs=5, shuffle=True, validation_data=(np.array(validation_data),np.array(validation_label)))
+    model.save(f"saved_model/{n}")

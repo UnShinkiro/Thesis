@@ -16,6 +16,7 @@ def form_input_data(entry, data_list, label_list):
         frame = filter_banks[n-30: n+11].reshape(41*40)
         data_list.append(frame)
         label_list.append(spk)
+        n += 10
 
 def get_filter_banks(data):
     all_filter_banks = []
