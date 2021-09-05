@@ -39,3 +39,4 @@ for n in range(5):
     model.fit(np.array(train_data), np.array(train_label), epochs=5, shuffle=True, validation_data=(np.array(validation_data),np.array(validation_label)))
     print(f"saving model {n}")
     model.save(f"saved_model/{n}")
+    tf.keras.backend.clear_session()
