@@ -10,11 +10,12 @@ from pre_process import form_input_data
 N_UTTERANCE = int(sys.argv[1])
 pre_emphasis = 0.97
 
-model = tf.keras.models.load_model("saved_model/my_model")
-model.summary()
-layer_name = 'dropout_1'
-intermediate_layer_model = keras.models.Model(  inputs=model.input,
-                                                outputs=model.get_layer(layer_name).output)
+for n in range(5):
+    model = tf.keras.models.load_model(f"saved_model/{n}")
+    model.summary()
+    layer_name = 'dropout_1'
+    intermediate_layer_model[n] = keras.models.Model(inputs=model.input,
+                                                    outputs=model.get_layer(layer_name).output)
 
 spk_list = os.listdir("vox/vox1_test_wav")
 utterance = {}
@@ -53,22 +54,24 @@ for speaker in spk_list:
     enrollment_label = [] #Not used
     d_utterance_list = []
     
-    for entry in enrollment_dataset:
-        enrollment_data.clear()
-        enrollment_label.clear()
-        form_input_data(entry, enrollment_data, enrollment_label)
-        intermediate_output = intermediate_layer_model.predict(np.array(enrollment_data))
-        d_utterance = np.zeros(256)
-        for out in intermediate_output:
-            d_utterance += out/sum(out)
-        d_utterance_list.append(d_utterance) # Saving the utterance d-vector for future uncertainty measure
-    d_model = np.zeros(256)
-    for vector in d_utterance_list:
-        d_model += vector
-    d_model = d_model/len(d_utterance_list)
-    filename = 'd-vector/' + speaker + '.pkl'
-    with open(filename, 'wb') as f:  # Python 3: open(..., 'wb')
-        pickle.dump([d_utterance_list, d_model], f)
+    for n in range(5):
+        print(f'using model {n} to enrol speaker {speaker}')
+        for entry in enrollment_dataset:
+            enrollment_data.clear()
+            enrollment_label.clear()
+            form_input_data(entry, enrollment_data, enrollment_label)
+            intermediate_output = intermediate_layer_model[n].predict(np.array(enrollment_data))
+            d_utterance = np.zeros(256)
+            for out in intermediate_output:
+                d_utterance += out/sum(out)
+            d_utterance_list.append(d_utterance) # Saving the utterance d-vector for future uncertainty measure
+        d_model = np.zeros(256)
+        for vector in d_utterance_list:
+            d_model += vector
+        d_model = d_model/len(d_utterance_list)
+        filename = f'd-vector/{n}/' + speaker + '.pkl'
+        with open(filename, 'wb') as f:  # Python 3: open(..., 'wb')
+            pickle.dump([d_utterance_list, d_model], f)
 
 with open('test_utterance.pkl', 'wb') as f:  # Python 3: open(..., 'wb')
     pickle.dump([utterance, spk_list], f)
