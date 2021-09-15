@@ -9,6 +9,7 @@ from pre_process import form_input_data
 
 N_UTTERANCE = int(sys.argv[1])
 pre_emphasis = 0.97
+intermediate_layer_model = []
 
 for n in range(5):
     model = tf.keras.models.load_model(f"saved_model/{n}")
