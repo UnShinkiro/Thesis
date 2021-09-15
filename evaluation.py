@@ -9,7 +9,7 @@ pre_emphasis = 0.97
 correct_count = 0
 incorrect_count = 0
 
-model = tf.keras.models.load_model("saved_model/my_model")
+model = tf.keras.models.load_model("saved_model/0")
 model.summary()
 layer_name = 'dropout_1'
 intermediate_layer_model = keras.models.Model(inputs=model.input,
@@ -20,7 +20,7 @@ with open('test_utterance.pkl', 'rb') as f:  # Python 3: open(..., 'wb')
 
 for chosen_speaker in spk_list[0:1]:
     print(f"testing speaker {chosen_speaker}")
-    filename = 'd-vector/' +  chosen_speaker + '.pkl'
+    filename = 'd-vector/0/' +  chosen_speaker + '.pkl'
     with open(filename, 'rb') as f:  # Python 3: open(..., 'wb')
         d_utterance_list, d_model = pickle.load(f)
 
