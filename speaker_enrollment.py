@@ -15,8 +15,8 @@ for n in range(5):
     model = tf.keras.models.load_model(f"saved_model/{n}")
     model.summary()
     layer_name = 'dropout_1'
-    intermediate_layer_model[n] = keras.models.Model(inputs=model.input,
-                                                    outputs=model.get_layer(layer_name).output)
+    intermediate_layer_model.append(keras.models.Model(inputs=model.input,
+                                                    outputs=model.get_layer(layer_name).output))
 
 spk_list = os.listdir("vox/vox1_test_wav")
 utterance = {}
