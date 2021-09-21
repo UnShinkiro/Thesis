@@ -1,15 +1,18 @@
 from scipy.io import wavfile
 import os
+import sys
 import pickle
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 from pre_process import form_input_data
+
+MODEL = int(sys.argv[1])
 pre_emphasis = 0.97
 correct_count = 0
 incorrect_count = 0
 
-model = tf.keras.models.load_model("saved_model/0")
+model = tf.keras.models.load_model(f"saved_model/{MODEL}")
 model.summary()
 layer_name = 'dropout_1'
 intermediate_layer_model = keras.models.Model(inputs=model.input,
@@ -18,7 +21,7 @@ intermediate_layer_model = keras.models.Model(inputs=model.input,
 with open('test_utterance.pkl', 'rb') as f:  # Python 3: open(..., 'wb')
     utterance, spk_list = pickle.load(f)
 
-for chosen_speaker in spk_list[0:1]:
+for chosen_speaker in spk_list[0:5]:
     print(f"testing speaker {chosen_speaker}")
     filename = 'd-vector/0/' +  chosen_speaker + '.pkl'
     with open(filename, 'rb') as f:  # Python 3: open(..., 'wb')
@@ -50,4 +53,6 @@ for chosen_speaker in spk_list[0:1]:
                 else:
                     incorrect_count += 1
 
+with open(f'results/{MODEL}.pkl', 'wb') as f:  # Python 3: open(..., 'wb')
+    pickle.dump([correct_count, incorrect_count], f)
 print(correct_count, incorrect_count)
