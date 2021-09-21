@@ -16,6 +16,7 @@ actual_speaker = spk_list[5]
 test_file_path = 'vox/vox1_test_wav/' + actual_speaker + '/' + utterance[actual_speaker]['files'][0]
 intermediate_layer_model = []
 intermediate_output = []
+d_vectors = {}
 
 _, data = wavfile.read(test_file_path)
 emphasized_signal = np.append(data[0], data[1:] - pre_emphasis * data[:-1])
