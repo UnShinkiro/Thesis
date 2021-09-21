@@ -42,6 +42,7 @@ for n in range(5):
     filename = f'd-vector/{n}/' +  claimed_speaker + '.pkl'
     with open(filename, 'rb') as f:  # Python 3: open(..., 'wb')
         d_utterance_list, d_model = pickle.load(f)
+        d_vectors[n] = {}
         d_vectors[n]['d_utterance_list'] = d_utterance_list
         d_vectors[n]['d_model'] = d_model
         d_vectors[n]['d_test'] = d_test
