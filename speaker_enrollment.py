@@ -40,7 +40,7 @@ for pid, speaker in enumerate(spk_list):
             for file in files:
                 if not file.startswith("."):
                     utterance[speaker]['files'].append(folder + "/" + file)
-'''
+
 for speaker in spk_list:
     print(f"enrolling speaker {speaker}")
     enrollment_dataset = []
@@ -73,7 +73,7 @@ for speaker in spk_list:
         filename = f'd-vector/{n}/' + speaker + '.pkl'
         with open(filename, 'wb') as f:  # Python 3: open(..., 'wb')
             pickle.dump([d_utterance_list, d_model], f)
-'''
+
 with open('test_utterance.pkl', 'wb') as f:  # Python 3: open(..., 'wb')
     pickle.dump([utterance, spk_list], f)
 
