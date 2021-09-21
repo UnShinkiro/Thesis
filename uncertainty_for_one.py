@@ -38,7 +38,7 @@ for n in range(5):
         d_test += out/sum(out)
 
     print(f'loading speaker d-vector for model {n}')
-    filename = f'd-vector/{n}' +  claimed_speaker + '.pkl'
+    filename = f'd-vector/{n}/' +  claimed_speaker + '.pkl'
     with open(filename, 'rb') as f:  # Python 3: open(..., 'wb')
         d_utterance_list, d_model = pickle.load(f)
         d_vectors[n]['d_utterance_list'] = d_utterance_list
