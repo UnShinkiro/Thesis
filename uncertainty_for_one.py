@@ -14,6 +14,7 @@ claimed_speaker = spk_list[0]
 actual_speaker = spk_list[5]
 
 test_file_path = 'vox/vox1_test_wav/' + actual_speaker + '/' + utterance[actual_speaker]['files'][0]
+print(test_file_path)
 intermediate_layer_model = []
 intermediate_output = []
 d_vectors = {}
