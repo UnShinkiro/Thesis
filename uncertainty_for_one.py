@@ -1,6 +1,7 @@
 import os
 import pickle
 import numpy as np
+from scipy.io import wavfile
 
 with open('test_utterance.pkl', 'rb') as f:  # Python 3: open(..., 'wb')
     utterance, spk_list = pickle.load(f)
