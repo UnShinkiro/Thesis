@@ -32,7 +32,7 @@ for n in range(5):
                                                     outputs=model.get_layer(layer_name).output))
 
     print(f'extracting d-vector from test file using model {n}')
-    intermediate_output[n] = intermediate_layer_model[n].predict(np.array(input_data))
+    intermediate_output.append(intermediate_layer_model[n].predict(np.array(input_data)))
     d_test = np.zeros(256)
     for out in intermediate_output[n]:
         d_test += out/sum(out)
