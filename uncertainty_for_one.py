@@ -2,12 +2,12 @@ import os
 import pickle
 import numpy as np
 
+with open('test_utterance.pkl', 'rb') as f:  # Python 3: open(..., 'wb')
+    utterance, spk_list = pickle.load(f)
+
 pre_emphasis = 0.97
 claimed_speaker = spk_list[0]
 actual_speaker = spk_list[5]
-
-with open('test_utterance.pkl', 'rb') as f:  # Python 3: open(..., 'wb')
-    utterance, spk_list = pickle.load(f)
 
 test_file_path = 'vox/vox1_test_wav/' + actual_speaker + '/' + utterance[actual_speaker]['files'][0]
 intermediate_layer_model = []
