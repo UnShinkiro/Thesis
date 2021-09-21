@@ -1,7 +1,10 @@
 import os
 import pickle
 import numpy as np
+import tensorflow as tf
+from tensorflow import keras
 from scipy.io import wavfile
+from pre_process import form_input_data
 
 with open('test_utterance.pkl', 'rb') as f:  # Python 3: open(..., 'wb')
     utterance, spk_list = pickle.load(f)
