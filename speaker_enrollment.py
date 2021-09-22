@@ -13,7 +13,7 @@ intermediate_layer_model = []
 
 for n in range(5):
     model = tf.keras.models.load_model(f"saved_model/{n}")
-    model.summary()
+    #model.summary()
     layer_name = 'dropout_1'
     intermediate_layer_model.append(keras.models.Model(inputs=model.input,
                                                     outputs=model.get_layer(layer_name).output))
@@ -57,6 +57,7 @@ for speaker in spk_list:
     
     for n in range(5):
         print(f'using model {n} to enrol speaker {speaker}')
+        d_utterance_list.clear()
         for entry in enrollment_dataset:
             enrollment_data.clear()
             enrollment_label.clear()
