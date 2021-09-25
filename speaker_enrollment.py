@@ -11,7 +11,7 @@ N_UTTERANCE = int(sys.argv[1])
 pre_emphasis = 0.97
 intermediate_layer_model = []
 
-for n in range(5):
+for n in range(20):
     model = tf.keras.models.load_model(f"saved_model/{n}")
     #model.summary()
     layer_name = 'dropout_1'
@@ -55,7 +55,7 @@ for speaker in spk_list:
     enrollment_label = [] #Not used
     d_utterance_list = []
     
-    for n in range(5):
+    for n in range(20):
         print(f'using model {n} to enrol speaker {speaker}')
         d_utterance_list.clear()
         for entry in enrollment_dataset:
