@@ -2,7 +2,7 @@ import pickle
 import sys
 
 MODEL = 0
-THRESHOLD = int(sys.argv[1])
+THRESHOLD = float(sys.argv[1])
 
 with open(f'results/{THRESHOLD}.pkl', 'rb') as f:  # Python 3: open(..., 'wb')
     same_correct,same_false,different_correct,different_false = pickle.load(f)
