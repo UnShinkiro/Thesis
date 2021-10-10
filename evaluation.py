@@ -17,7 +17,7 @@ different_correct = 0
 different_false = 0
 
 model = tf.keras.models.load_model(f"saved_model/{MODEL}")
-model.summary()
+#model.summary()
 layer_name = 'dropout_1'
 intermediate_layer_model = keras.models.Model(inputs=model.input,
                                  outputs=model.get_layer(layer_name).output)
@@ -32,30 +32,40 @@ for chosen_speaker in spk_list:
         d_utterance_list, d_model = pickle.load(f)
 
     for speaker in spk_list:
-        print(f"\ttest with {speaker}'s wavfiles")
-        for file in utterance[speaker]['files']:
-            print(f"\t\ttesting file {file}")
-            _, data = wavfile.read("vox/vox1_test_wav/" + speaker + "/" + file)
-            emphasized_signal = np.append(data[0], data[1:] - pre_emphasis * data[:-1])
-            evaluation_data = []
-            evaluation_label = []   # Not used
-            form_input_data((emphasized_signal,0), evaluation_data, evaluation_label)
-            intermediate_output = intermediate_layer_model.predict(np.array(evaluation_data))
-            d_eva = np.zeros(256)
-            for out in intermediate_output:
-                d_eva += out/sum(out)
-            if np.corrcoef(d_model,d_eva)[0][1] >= THRESHOLD:
-                # Same speaker
-                if speaker == chosen_speaker:
+        if speaker == chosen_speaker:
+            print(f"\ttest with same speaker's wavfiles")    
+            for file in utterance[speaker]['files'][0:80]:
+                print(f"\t\ttesting file {file}")
+                _, data = wavfile.read("vox/vox1_test_wav/" + speaker + "/" + file)
+                emphasized_signal = np.append(data[0], data[1:] - pre_emphasis * data[:-1])
+                evaluation_data = []
+                evaluation_label = []   # Not used
+                form_input_data((emphasized_signal,0), evaluation_data, evaluation_label)
+                intermediate_output = intermediate_layer_model.predict(np.array(evaluation_data))
+                d_eva = np.zeros(256)
+                for out in intermediate_output:
+                    d_eva += out/sum(out)
+                if np.corrcoef(d_model,d_eva)[0][1] >= THRESHOLD:
                     same_correct += 1
                 else:
                     same_false += 1
-            else:
-                # Different speaker
-                if not speaker == chosen_speaker:
-                    different_correct += 1
-                else:
+        else:
+            print(f"\ttest with different speaker's wavfiles")
+            for file in utterance[speaker]['files'][0:2]:
+                print(f"\t\ttesting file {file}")
+                _, data = wavfile.read("vox/vox1_test_wav/" + speaker + "/" + file)
+                emphasized_signal = np.append(data[0], data[1:] - pre_emphasis * data[:-1])
+                evaluation_data = []
+                evaluation_label = []   # Not used
+                form_input_data((emphasized_signal,0), evaluation_data, evaluation_label)
+                intermediate_output = intermediate_layer_model.predict(np.array(evaluation_data))
+                d_eva = np.zeros(256)
+                for out in intermediate_output:
+                    d_eva += out/sum(out)
+                if np.corrcoef(d_model,d_eva)[0][1] >= THRESHOLD:
                     different_false += 1
+                else:
+                    different_correct += 1
 
 with open(f'results/{THRESHOLD}.pkl', 'wb') as f:  # Python 3: open(..., 'wb')
     pickle.dump([same_correct,same_false,different_correct,different_false], f)
