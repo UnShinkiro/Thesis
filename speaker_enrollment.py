@@ -2,16 +2,18 @@ from scipy.io import wavfile
 import os
 import sys
 import pickle
+import random
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 from pre_process import form_input_data
 
 N_UTTERANCE = int(sys.argv[1])
+N_MODEL = 20
 pre_emphasis = 0.97
 intermediate_layer_model = []
 
-for n in range(20):
+for n in range(N_MODEL):
     model = tf.keras.models.load_model(f"saved_model/{n}")
     #model.summary()
     layer_name = 'dropout_1'
@@ -44,8 +46,9 @@ for pid, speaker in enumerate(spk_list):
 for speaker in spk_list:
     print(f"enrolling speaker {speaker}")
     enrollment_dataset = []
-    for count in range(10):
-        file_path = "vox/vox1_test_wav/" + speaker + "/" + utterance[speaker]['files'].pop(0)
+    for count in range(30):
+        file_path = "vox/vox1_test_wav/" + speaker + "/" + \
+            utterance[speaker]['files'].pop(random.randint(0, len(utterance[speaker]['files']) - 1))
         if count < N_UTTERANCE:
             _, data = wavfile.read(file_path)         # requires tons of memory with many spekaers
             emphasized_signal = np.append(data[0], data[1:] - pre_emphasis * data[:-1])
@@ -55,7 +58,7 @@ for speaker in spk_list:
     enrollment_label = [] #Not used
     d_utterance_list = []
     
-    for n in range(20):
+    for n in range(N_MODEL):
         print(f'using model {n} to enrol speaker {speaker}')
         d_utterance_list.clear()
         for entry in enrollment_dataset:

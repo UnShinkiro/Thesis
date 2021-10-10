@@ -7,10 +7,14 @@ import tensorflow as tf
 from tensorflow import keras
 from pre_process import form_input_data
 
-MODEL = int(sys.argv[1])
+MODEL = 0
+THRESHOLD = float(sys.argv[1])
+print(THRESHOLD)
 pre_emphasis = 0.97
-correct_count = 0
-incorrect_count = 0
+same_correct = 0
+same_false = 0
+different_correct = 0
+different_false = 0
 
 model = tf.keras.models.load_model(f"saved_model/{MODEL}")
 model.summary()
@@ -21,9 +25,9 @@ intermediate_layer_model = keras.models.Model(inputs=model.input,
 with open('test_utterance.pkl', 'rb') as f:  # Python 3: open(..., 'wb')
     utterance, spk_list = pickle.load(f)
 
-for chosen_speaker in spk_list[0:5]:
+for chosen_speaker in spk_list:
     print(f"testing speaker {chosen_speaker}")
-    filename = 'd-vector/0/' +  chosen_speaker + '.pkl'
+    filename = f'd-vector/{MODEL}/' +  chosen_speaker + '.pkl'
     with open(filename, 'rb') as f:  # Python 3: open(..., 'wb')
         d_utterance_list, d_model = pickle.load(f)
 
@@ -40,19 +44,18 @@ for chosen_speaker in spk_list[0:5]:
             d_eva = np.zeros(256)
             for out in intermediate_output:
                 d_eva += out/sum(out)
-            if np.corrcoef(d_model,d_eva)[0][1] >= 0.8:
+            if np.corrcoef(d_model,d_eva)[0][1] >= THRESHOLD:
                 # Same speaker
                 if speaker == chosen_speaker:
-                    correct_count += 1
+                    same_correct += 1
                 else:
-                    incorrect_count += 1
+                    same_false += 1
             else:
                 # Different speaker
                 if not speaker == chosen_speaker:
-                    correct_count += 1
+                    different_correct += 1
                 else:
-                    incorrect_count += 1
+                    different_false += 1
 
-with open(f'results/{MODEL}.pkl', 'wb') as f:  # Python 3: open(..., 'wb')
-    pickle.dump([correct_count, incorrect_count], f)
-print(correct_count, incorrect_count)
+with open(f'results/{THRESHOLD}.pkl', 'wb') as f:  # Python 3: open(..., 'wb')
+    pickle.dump([same_correct,same_false,different_correct,different_false], f)
