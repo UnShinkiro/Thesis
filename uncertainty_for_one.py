@@ -33,9 +33,9 @@ for claimed_speaker in spk_list:
     for speaker in spk_list:
         print(f'using speaker {speaker}\'s file')
         if speaker == claimed_speaker:
-            count = 80
+            count = 40
         else:
-            count = 2
+            count = 1
         for file in utterance[speaker]['files'][0:count]:
             print(f'evaluation using {file}')
             # Extract d_test (d-vector for test utterance)
