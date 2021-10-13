@@ -1,6 +1,6 @@
 #!/bin/bash
 ## declare an array variable
-declare -a arr=(0.1 0.2 0.3)
+declare -a arr=(0.1 0.2)
 
 ## now loop through the above array
 for i in "${arr[@]}"
