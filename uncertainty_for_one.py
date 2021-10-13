@@ -89,7 +89,7 @@ for claimed_speaker in spk_list:
                         if corr > THRESHOLD:
                             weight.append((corr-THRESHOLD)/(1-THRESHOLD) * 10)
                         else:
-                            weight.append((THRESHOLD - abs(corr))/THRESHOLD)
+                            weight.append(abs((THRESHOLD - abs(corr))/THRESHOLD))
                     else:
                         if corr > THRESHOLD:
                             weight.append((corr - THRESHOLD)/(1-THRESHOLD) * 10)
