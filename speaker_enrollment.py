@@ -8,9 +8,11 @@ import tensorflow as tf
 from tensorflow import keras
 from pre_process import form_input_data
 
+N_MODEL = 20
 N_UTTERANCE = int(sys.argv[1])
 os.mkdir(f"d-vector/{N_UTTERANCE}")
-N_MODEL = 20
+for n in range(N_MODEL):
+    os.mkdir(f"d-vector/{N_UTTERANCE}/{n}")
 pre_emphasis = 0.97
 intermediate_layer_model = []
 
