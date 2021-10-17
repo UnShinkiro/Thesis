@@ -74,7 +74,7 @@ for speaker in spk_list:
         for vector in d_utterance_list:
             d_model += vector
         d_model = d_model/len(d_utterance_list)
-        filename = f'd-vector/{n}/' + speaker + '.pkl'
+        filename = f'd-vector/{N_UTTERANCE}/{n}/' + speaker + '.pkl'
         with open(filename, 'wb') as f:  # Python 3: open(..., 'wb')
             pickle.dump([d_utterance_list, d_model], f)
 
