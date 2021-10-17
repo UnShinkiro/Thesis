@@ -10,9 +10,8 @@ from pre_process import form_input_data
 
 N_MODEL = 20
 N_UTTERANCE = int(sys.argv[1])
-os.mkdir(f"d-vector/{N_UTTERANCE}")
 for n in range(N_MODEL):
-    os.mkdir(f"d-vector/{N_UTTERANCE}/{n}")
+    os.makedirs(f"d-vector/{N_UTTERANCE}/{n}", exist_ok=True)
 pre_emphasis = 0.97
 intermediate_layer_model = []
 
