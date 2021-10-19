@@ -15,9 +15,8 @@ with open('test_utterance.pkl', 'rb') as f:  # Python 3: open(..., 'wb')
 
 pre_emphasis = 0.97
 N_MODELS = 20
-THRESHOLD = float(sys.argv[1])
-decision_and_uncertainty = {}
-
+N_UTTERANCE = sys.argv[1]
+d_vectors = {}
 intermediate_layer_model = []
 
 # Load models
@@ -29,40 +28,34 @@ for n in range(N_MODELS):
     intermediate_layer_model.append(keras.models.Model(inputs=model.input,
                                                     outputs=model.get_layer(layer_name).output))
 
-for claimed_speaker in spk_list:
-    for speaker in spk_list:
-        print(f'using speaker {speaker}\'s file')
-        if speaker == claimed_speaker:
-            count = 40
-        else:
-            count = 1
-        for file in utterance[speaker]['files'][0:count]:
-            print(f'evaluation using {file}')
-            # Extract d_test (d-vector for test utterance)
-            intermediate_output = []
-            d_vectors = {}
-            _, data = wavfile.read('vox/vox1_test_wav/' + speaker + '/' + file)
-            emphasized_signal = np.append(data[0], data[1:] - pre_emphasis * data[:-1])
-            input_data = []
-            input_label = []   # Not used
-            form_input_data((emphasized_signal,0), input_data, input_label)
-
-            for n in range(N_MODELS):
-                #print(f'extracting d-vector from test file using model {n}')
-                intermediate_output.append(intermediate_layer_model[n].predict(np.array(input_data)))
-                d_test = np.zeros(256)
-                for out in intermediate_output[n]:
-                    d_test += out/sum(out)
-
-                #print(f'loading speaker d-vector for model {n}')
-                filename = f'd-vector/{n}/' +  claimed_speaker + '.pkl'
-                with open(filename, 'rb') as f:  # Python 3: open(..., 'wb')
-                    d_utterance_list, d_model = pickle.load(f)
-                    d_vectors[n] = {}
-                    d_vectors[n]['d_utterance_list'] = d_utterance_list
-                    d_vectors[n]['d_model'] = d_model
-                    d_vectors[n]['d_test'] = d_test
-
+for speaker in spk_list:
+    d_vectors[speaker] = {}
+    for n in range(N_MODELS):
+        d_vectors[speaker][n] = {}
+        filename = f'd-vector/{N_UTTERANCE}/{n}/' +  speaker + '.pkl'
+        with open(filename, 'rb') as f:  # Python 3: open(..., 'wb')
+            d_utterance_list, d_model = pickle.load(f)
+            d_vectors[speaker][n]['d_utterance_list'] = d_utterance_list
+            d_vectors[speaker][n]['d_model'] = d_model
+    for file in utterance[speaker]['files'][0:40]:
+        d_vectors[speaker][file] = {}
+        print(f"extracting {speaker}'s d-vector from {file}")
+        intermediate_output = []
+        _, data = wavfile.read('vox/vox1_test_wav/' + speaker + '/' + file)
+        emphasized_signal = np.append(data[0], data[1:] - pre_emphasis * data[:-1])
+        input_data = []
+        input_label = []   # Not used
+        form_input_data((emphasized_signal,0), input_data, input_label)
+        for n in range(N_MODELS):
+            intermediate_output.append(intermediate_layer_model[n].predict(np.array(input_data)))
+            d_test = np.zeros(256)
+            for out in intermediate_output[n]:
+                d_test += out/sum(out)
+            d_vectors[speaker][file][n] = d_test
+            
+with open(f"results/d-vectors_{N_UTTERANCE}.pkl", 'wb') as f:
+    pickle.dump(d_vectors, f)
+'''
             # Extract Uncerntainties
             #print('extracting uncertainties')
             scores = []
@@ -143,3 +136,4 @@ for claimed_speaker in spk_list:
 
 with open(f'results/uncertainty_{THRESHOLD}.pkl', 'wb') as f:  # Python 3: open(..., 'wb')
     pickle.dump(decision_and_uncertainty, f)
+'''
