@@ -1,6 +1,6 @@
 #!/bin/bash
 ## declare an array variable
-declare -a arr=(25 20 15 10)
+declare -a arr=(20 15 10)
 
 ## now loop through the above array
 for i in "${arr[@]}"
