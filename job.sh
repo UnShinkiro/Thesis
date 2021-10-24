@@ -9,7 +9,7 @@ do
 echo "Uncertainty extraction for $n utterances model"
    for i in "${arr[@]}"
    do
-      python uncertainty_extraction.py "$i $n"
+      python uncertainty_extraction.py "$i" "$n"
    done
 done
 
