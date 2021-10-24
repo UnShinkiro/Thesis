@@ -53,7 +53,7 @@ for speaker in spk_list:
                 d_test += out/sum(out)
             d_vectors[speaker][file][n] = d_test
             
-with open(f"results/d-vectors_{N_UTTERANCE}.pkl", 'wb') as f:
+with open(f"results/{N_UTTERANCE}/d-vectors_{N_UTTERANCE}.pkl", 'wb') as f:
     pickle.dump(d_vectors, f)
 '''
             # Extract Uncerntainties
