@@ -19,6 +19,8 @@ N_UTTERANCE = sys.argv[1]
 d_vectors = {}
 intermediate_layer_model = []
 
+os.makedirs(f"results/{N_UTTERANCE}", exist_ok=True)
+
 # Load models
 for n in range(N_MODELS):
     print(f'Loading DNN model {n}')

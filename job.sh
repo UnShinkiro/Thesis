@@ -6,12 +6,12 @@ declare -a loop=(9 8 7 6 5)
 ## now loop through the above array
 for n in "${loop[@]}"
 do
-echo "using $n utterances to enrol speakers"
-python speaker_enrollment.py "$n"
+echo "extracting uncertainties from $n utterances enrolled speaker models"
+python uncertainty_for_one.py "$n"
 #   for i in "${arr[@]}"
 #   do
 #      python uncertainty_extraction.py "$i" "$n"
 #   done
 done
 
-cp -r d-vector/ ../../../../srv/scratch/z5195063/
+cp -r results/ ../../../../srv/scratch/z5195063/
