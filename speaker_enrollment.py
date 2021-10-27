@@ -50,7 +50,7 @@ for speaker in spk_list:
     enrollment_dataset = []
     for count in range(30):
         file_path = "vox/vox1_test_wav/" + speaker + "/" + \
-            utterance[speaker]['files'].pop(random.randint(0, len(utterance[speaker]['files']) - 1))
+            utterance[speaker]['files'].pop(0)
         if count < N_UTTERANCE:
             _, data = wavfile.read(file_path)         # requires tons of memory with many spekaers
             emphasized_signal = np.append(data[0], data[1:] - pre_emphasis * data[:-1])
