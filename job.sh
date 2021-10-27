@@ -1,16 +1,17 @@
 #!/bin/bash
 ## declare an array variable
-declare -a arr=(0.7 0.6 0.5 0.4 0.3 0.2)
-declare -a loop=(20 15 10)
+#declare -a arr=(0.7 0.6 0.5 0.4 0.3 0.2)
+declare -a loop=(9 8 7 6 5)
 
 ## now loop through the above array
 for n in "${loop[@]}"
 do
-echo "Uncertainty extraction for $n utterances model"
-   for i in "${arr[@]}"
-   do
-      python uncertainty_extraction.py "$i" "$n"
-   done
+echo "using $n utterances to enrol speakers"
+python speaker_enrollment.py "$n"
+#   for i in "${arr[@]}"
+#   do
+#      python uncertainty_extraction.py "$i" "$n"
+#   done
 done
 
-cp -r results/ ../../../../srv/scratch/z5195063/
+cp -r d-vector/ ../../../../srv/scratch/z5195063/
